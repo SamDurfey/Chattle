@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "544123869760",
+    "firebase_url": "https://chattle-905f0.firebaseio.com",
+    "project_id": "chattle-905f0",
+    "storage_bucket": "chattle-905f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:544123869760:android:b5136e6c6d6ea551",
+        "android_client_info": {
+          "package_name": "com.epicodus.chattle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "544123869760-2i57fvnh9i1imr3459eo3q16t94bljjq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.epicodus.chattle",
+            "certificate_hash": "039BE27F4DF054CAACFBABF44AA9F24709A34B67"
+          }
+        },
+        {
+          "client_id": "544123869760-rbnrg9ltdr1cnt27p6efc8npvrqp6kg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBenPg0DxpTiHZdEGzA-LktRlQdaNA2ECU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "544123869760-rbnrg9ltdr1cnt27p6efc8npvrqp6kg8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
