@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Conversation {
     private ArrayList<Message> messages = new ArrayList<>();
     private String lastMessage;
-    private String me;
-    private String you;
+    private String user1ID;
+    private String user2ID;
 
-    public Conversation(ArrayList<Message> messages, String me, String you) {
+    public Conversation(ArrayList<Message> messages, String user1ID, String user2ID) {
         this.messages = messages;
-        this.me = me;
-        this.you = you;
+        this.user1ID = user1ID;
+        this.user2ID = user2ID;
         this.lastMessage = messages.get(messages.size() -1).getBody();
     }
 
@@ -31,19 +31,19 @@ public class Conversation {
         this.lastMessage = lastMessage;
     }
 
-    public String getMe() {
-        return me;
+    public String getUser1ID() {
+        return user1ID;
     }
 
-    public void setMe(String me) {
-        this.me = me;
+    public void setUser1ID(String me) {
+        this.user1ID = me;
     }
 
-    public String getYou() {
-        return you;
+    public String getUser2ID() {
+        return this.user2ID;
     }
 
-    public void setYou(String you) {
-        this.you = you;
+    public void setUser2ID(String you) {
+        this.user2ID = you;
     }
 }

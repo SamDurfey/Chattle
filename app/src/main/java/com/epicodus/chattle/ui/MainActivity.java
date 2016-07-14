@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -22,8 +23,11 @@ import com.epicodus.chattle.models.Conversation;
 import com.epicodus.chattle.models.Message;
 import com.epicodus.chattle.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -31,55 +35,65 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private DatabaseReference mUserReference; // This is what I've just written. Continuing setting up database references.
+    private DatabaseReference mUserReference;
+    private DatabaseReference mAllConversationsReference;
+    private FirebaseAuth mAuth;
     private ArrayAdapter<User> userArrayAdapter;
-    private ArrayList<User> usersArray;
-//    private String userChoice;
+    private String mCurrentUserUID;
+    private User mCurrentUser;
+    private ArrayList<Message> messages;
+    private ArrayList<Conversation> conversationList;
+    private DatabaseReference mAllUsersReference;
+//    private String use
 
     @Bind(R.id.signOutButton) Button mSignOutButton;
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
     @Bind(R.id.spinner) Spinner mUserSpinner;
+    @Bind(R.id.newConversationButton) Button mNewConversationButton;
+    @Bind(R.id.newConversationMessageBody) EditText mNewConversationMessageBody;
 
     private ConversationListAdapter mAdapter;
 
-    public Message message1;
-    public Message message2;
-    public Message message3;
-    public Conversation conversation1;
-    public Conversation conversation2;
-    public User user1;
-    public User user2;
+    private ValueEventListener mUserReferenceListener;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUserUID = mAuth.getCurrentUser().getUid();
+        mAllUsersReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER);
+        mAllConversationsReference = FirebaseDatabase.getInstance().getReference().child("conversation");
+        mUserReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER).child(mCurrentUserUID);
 
-        mUserReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mSignOutButton.setOnClickListener(this);
-        message1 = new Message("This is a cool message", "sender1", "recipient");
-        message2 = new Message("This is a SUPER MESSAGE", "recipient", "sender1");
-        message3 = new Message("This message is going to be alone", "sender2", "recipient");
-        ArrayList<Message> messageList1 = new ArrayList<>();
-        ArrayList<Message> messageList2 = new ArrayList<>();
-        messageList1.add(message1);
-        messageList1.add(message2);
-        messageList2.add(message3);
-        ArrayList<Conversation> conversationList = new ArrayList<>();
-        conversation1 = new Conversation(messageList1, "recipient", "sender1");
-        conversation2 = new Conversation(messageList2, "recipient", "sender2");
-        conversationList.add(conversation1);
-        conversationList.add(conversation2);
+        mUserReferenceListener = mAllConversationsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot conversationSnapshot : dataSnapshot.getChildren()){
+                    String user1ID = conversationSnapshot.child("user1ID").toString();
+                    String user2ID = conversationSnapshot.child("user2ID").toString();
+                    for(DataSnapshot message : conversationSnapshot.child("messages").getChildren()){
+                        Message newMess = new Message(message.toString());
+                        messages.add(newMess);
+                    }
+                    String lastMessage = conversationSnapshot.child("lastMessage").toString();
+                    Conversation newConversation = new Conversation(messages, user1ID, user2ID);
+                    messages.clear();
+                    conversationList.add(newConversation);
+                }
+            }
 
-        user1 = new User("sam", "flerf@efd.ccc", "dddddddd", "5");
-        user2 = new User("ass", "gitit@ass.ass", "skronk", "6");
-        usersArray.add(user1);
-        usersArray.add(user2);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         mAdapter = new ConversationListAdapter(getApplicationContext(), conversationList);
         mRecyclerView.setAdapter(mAdapter);
@@ -93,11 +107,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         userArrayAdapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item, usersArray);
         mUserSpinner.setAdapter(userArrayAdapter);
-        mUserSpinner.setOnItemClickListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected (AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+        mUserSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                //get the thing that is selected here
+                String something  = mUserSpinner.getSelectedItem().toString();
 
             }
-            public void onNothingSelected(AdapterView<?> arg0) {
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
@@ -108,6 +129,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == mSignOutButton) {
             logout();
+        } else if (view == mNewConversationButton){
+            String messageBody = mNewConversationMessageBody.getText().toString();
+            Message newMessage = new Message(messageBody);
+            ArrayList<Message> newMessageArrayList = new ArrayList<>();
+            newMessageArrayList.add(newMessage);
+
+            Conversation newConversation = new Conversation(newMessageArrayList, mCurrentUserUID, )
         }
     }
 
