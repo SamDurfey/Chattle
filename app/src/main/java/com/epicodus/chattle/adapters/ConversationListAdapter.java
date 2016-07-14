@@ -1,4 +1,4 @@
-package com.epicodus.chattle;
+package com.epicodus.chattle.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.epicodus.chattle.R;
 import com.epicodus.chattle.models.Conversation;
 
 import java.util.ArrayList;
