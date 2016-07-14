@@ -1,18 +1,26 @@
 package com.epicodus.chattle.ui;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.epicodus.chattle.Constants;
 import com.epicodus.chattle.R;
 import com.epicodus.chattle.adapters.ConversationListAdapter;
 import com.epicodus.chattle.models.Conversation;
 import com.epicodus.chattle.models.Message;
+import com.epicodus.chattle.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,9 +32,13 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private DatabaseReference mUserReference; // This is what I've just written. Continuing setting up database references.
+    private ArrayAdapter<User> userArrayAdapter;
+    private ArrayList<User> usersArray;
+//    private String userChoice;
 
     @Bind(R.id.signOutButton) Button mSignOutButton;
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
+    @Bind(R.id.spinner) Spinner mUserSpinner;
 
     private ConversationListAdapter mAdapter;
 
@@ -35,10 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Message message3;
     public Conversation conversation1;
     public Conversation conversation2;
+    public User user1;
+    public User user2;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         mUserReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER);
 
@@ -60,11 +76,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         conversationList.add(conversation1);
         conversationList.add(conversation2);
 
+        user1 = new User("sam", "flerf@efd.ccc", "dddddddd", "5");
+        user2 = new User("ass", "gitit@ass.ass", "skronk", "6");
+        usersArray.add(user1);
+        usersArray.add(user2);
+
         mAdapter = new ConversationListAdapter(getApplicationContext(), conversationList);
         mRecyclerView.setAdapter(mAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+
+
+        //SPINNAH
+
+
+        userArrayAdapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item, usersArray);
+        mUserSpinner.setAdapter(userArrayAdapter);
+        mUserSpinner.setOnItemClickListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected (AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
     }
 
     @Override

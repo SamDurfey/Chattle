@@ -23,5 +23,55 @@
         android:id="@+id/recyclerView"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/newConversationRecipient" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newConversationRecipient"
+        android:hint="Who Do You Want To Message?"
+        android:textSize="20dp"
+        android:layout_marginBottom="179dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/newConversationMessageBody"
+        android:hint="Your Message Goes Here"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/newConversationRecipient"
+        android:layout_marginTop="44dp"
+        android:layout_alignRight="@+id/recyclerView"
+        android:layout_alignEnd="@+id/recyclerView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/button2" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/button2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/newConversationMessageBody"
+        android:layout_alignEnd="@+id/newConversationMessageBody" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/newConversationRecipient"
+        android:layout_alignRight="@+id/newConversationRecipient"
+        android:layout_alignEnd="@+id/newConversationRecipient" />
+
+
 </RelativeLayout>
