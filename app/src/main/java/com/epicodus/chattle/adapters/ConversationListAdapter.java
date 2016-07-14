@@ -40,7 +40,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
 
         public void bindConversation(Conversation conversation){
             mMessageBodyTextView.setText(conversation.getLastMessage());
-            mUserNameView.setText(conversation.getYou());
+            mUserNameView.setText(conversation.getUser1ID());
         }
     }
     @Override
@@ -57,6 +57,10 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
 
     @Override
     public int getItemCount() {
-        return mConversations.size();
+        if (mConversations != null) {
+            return mConversations.size();
+        } else {
+            return 0;
+        }
     }
 }

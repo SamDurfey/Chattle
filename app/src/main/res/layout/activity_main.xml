@@ -14,28 +14,19 @@
         android:layout_height="wrap_content"
         android:text="Sign Out"
         android:id="@+id/signOutButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/newConversationMessageBody" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerView"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/newConversationMessageBody"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/newConversationRecipient" />
+        android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/newConversationRecipient"
-        android:hint="Who Do You Want To Message?"
-        android:textSize="20dp"
-        android:layout_marginBottom="179dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -45,7 +36,6 @@
         android:id="@+id/newConversationMessageBody"
         android:hint="Your Message Goes Here"
         android:textSize="20dp"
-        android:layout_alignTop="@+id/newConversationRecipient"
         android:layout_marginTop="44dp"
         android:layout_alignRight="@+id/recyclerView"
         android:layout_alignEnd="@+id/recyclerView"
@@ -69,9 +59,7 @@
         android:id="@+id/spinner"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/newConversationRecipient"
-        android:layout_alignRight="@+id/newConversationRecipient"
-        android:layout_alignEnd="@+id/newConversationRecipient" />
+        android:layout_above="@+id/newConversationMessageBody" />
 
 
 </RelativeLayout>

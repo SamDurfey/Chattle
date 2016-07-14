@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,6 +36,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = MainActivity.class.getSimpleName();
     private DatabaseReference mUserReference;
     private DatabaseReference mAllConversationsReference;
     private FirebaseAuth mAuth;
@@ -66,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAllUsersReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER);
         mAllConversationsReference = FirebaseDatabase.getInstance().getReference().child("conversation");
         mUserReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER).child(mCurrentUserUID);
+        messages = new ArrayList<>();
+        conversationList = new ArrayList<>();
 
 
         super.onCreate(savedInstanceState);
@@ -76,17 +81,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot conversationSnapshot : dataSnapshot.getChildren()){
-                    String user1ID = conversationSnapshot.child("user1ID").toString();
-                    String user2ID = conversationSnapshot.child("user2ID").toString();
+                    String user1ID = conversationSnapshot.child("user1ID").getValue().toString();
+                    String user2ID = conversationSnapshot.child("user2ID").getValue().toString();
                     for(DataSnapshot message : conversationSnapshot.child("messages").getChildren()){
-                        Message newMess = new Message(message.toString());
+                        Message newMess = new Message(message.getValue().toString());
                         messages.add(newMess);
                     }
                     String lastMessage = conversationSnapshot.child("lastMessage").toString();
                     Conversation newConversation = new Conversation(messages, user1ID, user2ID);
                     messages.clear();
                     conversationList.add(newConversation);
+
                 }
+                mAdapter = new ConversationListAdapter(getApplicationContext(), conversationList);
+                mRecyclerView.setAdapter(mAdapter);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+                mRecyclerView.setLayoutManager(layoutManager);
+                mRecyclerView.setHasFixedSize(true);
             }
 
             @Override
@@ -95,11 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mAdapter = new ConversationListAdapter(getApplicationContext(), conversationList);
-        mRecyclerView.setAdapter(mAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
+
 
 
         //SPINNAH
@@ -128,15 +135,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == mSignOutButton) {
-            logout();
-        } else if (view == mNewConversationButton){
-            String messageBody = mNewConversationMessageBody.getText().toString();
-            Message newMessage = new Message(messageBody);
-            ArrayList<Message> newMessageArrayList = new ArrayList<>();
-            newMessageArrayList.add(newMessage);
-
-            Conversation newConversation = new Conversation(newMessageArrayList, mCurrentUserUID, )
-        }
+            logout();}
+//        } else if (view == mNewConversationButton){
+//            String messageBody = mNewConversationMessageBody.getText().toString();
+//            Message newMessage = new Message(messageBody);
+//            ArrayList<Message> newMessageArrayList = new ArrayList<>();
+//            newMessageArrayList.add(newMessage);
+//
+//            Conversation newConversation = new Conversation(newMessageArrayList, mCurrentUserUID, )
+//        }
     }
 
     private void logout() {
