@@ -8,11 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import com.epicodus.chattle.Constants;
 import com.epicodus.chattle.R;
 import com.epicodus.chattle.adapters.ConversationListAdapter;
 import com.epicodus.chattle.models.Conversation;
 import com.epicodus.chattle.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -20,6 +23,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private DatabaseReference mUserReference; // This is what I've just written. Continuing setting up database references.
+
     @Bind(R.id.signOutButton) Button mSignOutButton;
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -34,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mUserReference = FirebaseDatabase.getInstance().getReference().child(Constants.FIREBASE_CHILD_USER);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
